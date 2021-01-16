@@ -12,4 +12,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ECommerceApi.Data\ECommerceApi.Data.csproj" />
+  </ItemGroup>
+
 </Project>
