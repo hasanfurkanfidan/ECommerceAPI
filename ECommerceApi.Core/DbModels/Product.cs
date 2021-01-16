@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ECommerceApi.Data.DbModels
+namespace ECommerceApi.Core.DbModels
 {
     public class Product
     {

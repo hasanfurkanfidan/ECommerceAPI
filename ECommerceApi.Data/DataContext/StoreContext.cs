@@ -1,11 +1,12 @@
-﻿using ECommerceApi.Data.DbModels;
+﻿
+using ECommerceApi.Core.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ECommerceApi.Data.DataContext
+namespace ECommerceApi.Infastructure.DataContext
 {
     public class StoreContext:DbContext
     {
