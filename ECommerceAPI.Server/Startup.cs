@@ -31,6 +31,8 @@ namespace ECommerceAPI.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductBrandRepository, ProductBrandRepository>();
+            services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
             services.AddControllers()
          .AddJsonOptions(options =>
          {
