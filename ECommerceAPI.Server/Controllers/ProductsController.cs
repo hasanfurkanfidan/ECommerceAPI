@@ -1,5 +1,8 @@
 ﻿using ECommerceApi.Core.DbModels;
 using ECommerceApi.Core.Interfaces;
+using ECommerceAPI.Server.Dtos;
+using ECommerceAPI.Server.ValidationRules.AddDtos;
+using ECommerceAPI.Server.ValidationRules.DeleteDtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,27 +19,63 @@ namespace ECommerceAPI.Server.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
+
         public ProductsController(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetProducts()
+
+        [HttpPost]
+        public async Task<IActionResult> AddAsync([FromBody] ProductAddDto model)
         {
-            var data = await _productRepository.GetProductsAsync();     
-            return Ok(data);
+            var validator = new ProductAddDtoValidator();
+            var result = await validator.ValidateAsync(model);
+            if (result.IsValid)
+            {
+                await _productRepository.AddAsync(new Product
+                {
+                    Description = model.Description,
+                    Name = model.Name,
+                    Price = model.Price,
+                    ProductBrandId = model.ProductBrandId,
+                    ProductTypeId = model.ProductTypeId,
+                });
+                var columnCount = await _productRepository.SavechangesAsync();
+                columnCount = 0;
+                if (columnCount == 0)
+                {
+                    ModelState.AddModelError("", "Bir problem ile karşılaştık");
+                    return BadRequest(ModelState.Values);
+                }
+                return NoContent();
+
+            }
+            return BadRequest(result.Errors);
         }
-        [HttpGet("{id}")]
-        public async Task<IActionResult>GetById(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(ProductDeleteDto model)
         {
-            var data = await _productRepository.GetProductByIdAsync(id);
-            return Ok(data);
+            var validator = new ProductDeleteDtoValidator();
+            var result = await validator.ValidateAsync(model);
+            if (result.IsValid)
+            {
+                var product = await _productRepository.GetAsync(p => p.Id == model.Id);
+                if (product == null)
+                {
+                    return BadRequest("Ürün bulunamadı");
+                }
+                _productRepository.Remove(product);
+                var columnCount = await _productRepository.SavechangesAsync();
+                if (columnCount == 0)
+                {
+
+                    ModelState.AddModelError("", "Bir problem ile karşılaştık");
+                    return BadRequest(ModelState.Values);
+                }
+                return NoContent();
+            }
+            return BadRequest(result.Errors);
         }
-        [HttpGet("getbrands")]
-        public async Task<IActionResult> GetProductBrands()
-        {
-            var data = await _productRepository.GetProductBrandsAsync();
-            return Ok(data);
-        }
+
     }
 }

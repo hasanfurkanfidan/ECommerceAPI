@@ -12,6 +12,11 @@ namespace ECommerceApi.Infastructure.Implements
 {
     public class ProductRepository : EfGenericRepository<Product>,IProductRepository
     {
-       
+      
+        public ProductRepository(StoreContext storeContext):base(storeContext)
+        {
+                
+        }
+
     }
 }

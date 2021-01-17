@@ -13,58 +13,60 @@ namespace ECommerceApi.Infastructure.Implements
 {
     public class EfGenericRepository<T> : IGenericRepository<T> where T:BaseEntity,new()
     {
+        private readonly StoreContext _storeContext;
+        public EfGenericRepository(StoreContext storeContext)
+        {
+            _storeContext = storeContext;
+        }
         public async Task AddAsync(T entity)
         {
-            using var context = new StoreContext();
-            await context.AddAsync(entity);
+           
+                await _storeContext.AddAsync(entity);
+            
+            
         }
 
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
-            using var context = new StoreContext();
-            return await context.Set<T>().AsNoTracking().ToListAsync();
+            return await _storeContext.Set<T>().AsNoTracking().ToListAsync();
         }
 
         public async Task<T> GetAsync(Expression<Func<T, bool>> expression)
         {
             using var context = new StoreContext();
-            return await context.Set<T>().Where(expression).AsNoTracking().FirstOrDefaultAsync();
+            return await _storeContext.Set<T>().Where(expression).AsNoTracking().FirstOrDefaultAsync();
         }
 
         public async Task<T> GetByIdAsyn(int id)
         {
-            using var context = new StoreContext();
-            return await context.Set<T>().Where(p => p.Id == id).FirstOrDefaultAsync();
+            return await _storeContext.Set<T>().Where(p => p.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<IReadOnlyList<T>> GetListAsync(Expression<Func<T, bool>> expression)
         {
-            using var context = new StoreContext();
-            return await context.Set<T>().Where(expression).ToListAsync();
+            return await _storeContext.Set<T>().Where(expression).ToListAsync();
         }
 
         public async Task<IReadOnlyList<T>> GetListBySortingAsync<TSort>(Expression<Func<T, bool>> expression, Expression<Func<T, TSort>> sorting)
         {
-            using var context = new StoreContext();
-            return await context.Set<T>().Where(expression).OrderByDescending(sorting).ToListAsync();
+            return await _storeContext.Set<T>().Where(expression).OrderByDescending(sorting).ToListAsync();
         }
 
         public void Remove(T entity)
         {
-            using var context = new StoreContext();
-            context.Remove(entity);
+
+            _storeContext.Remove(entity);
         }
 
-        public async Task SavechangesAsync()
+        public async Task<int> SavechangesAsync()
         {
-            using var context = new StoreContext();
-            await context.SaveChangesAsync();
+            var a = await _storeContext.SaveChangesAsync();
+            return a;
         }
 
         public void Update(T entity)
         {
-            using var context = new StoreContext();
-            context.Update(entity);
+            _storeContext.Update(entity);
         }
     }
 }

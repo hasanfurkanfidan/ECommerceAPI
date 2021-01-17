@@ -17,6 +17,6 @@ namespace ECommerceApi.Core.Interfaces
         Task AddAsync(T entity);
         void Update(T entity);
         void Remove(T entity);
-        Task SavechangesAsync();
+        Task<int> SavechangesAsync();
     }
 }

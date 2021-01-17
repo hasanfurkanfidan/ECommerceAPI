@@ -9,5 +9,6 @@ namespace ECommerceApi.Core.Interfaces
     public interface IProductRepository:IGenericRepository<Product>
     {
 
+     
     }
 }

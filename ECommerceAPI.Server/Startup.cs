@@ -1,9 +1,14 @@
 using ECommerceApi.Core.Interfaces;
+using ECommerceApi.Infastructure.DataContext;
 using ECommerceApi.Infastructure.Implements;
+using ECommerceAPI.Server.Dtos;
+using ECommerceAPI.Server.ValidationRules.AddDtos;
+using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,7 +37,9 @@ namespace ECommerceAPI.Server
         {
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductBrandRepository, ProductBrandRepository>();
+            services.AddDbContext<StoreContext>();
             services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
+            services.AddTransient<IValidator<ProductAddDto>, ProductAddDtoValidator>();
             services.AddControllers()
          .AddJsonOptions(options =>
          {
