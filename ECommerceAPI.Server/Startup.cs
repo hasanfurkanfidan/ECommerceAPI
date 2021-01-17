@@ -9,9 +9,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ECommerceAPI.Server
@@ -29,7 +31,11 @@ namespace ECommerceAPI.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddControllers();
+            services.AddControllers()
+         .AddJsonOptions(options =>
+         {
+             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+         });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ECommerceAPI.Server", Version = "v1" });

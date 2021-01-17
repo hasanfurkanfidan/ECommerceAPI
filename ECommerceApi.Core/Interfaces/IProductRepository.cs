@@ -8,7 +8,11 @@ namespace ECommerceApi.Core.Interfaces
 {
     public interface IProductRepository
     {
+        
+        Task<List<Product>> GetProductsAsync();
+        Task<List<ProductBrand>> GetProductBrandsAsync();
+        Task<List<ProductType>> GetProductTypesAsync();
+
         Task<Product> GetProductByIdAsync(int id);
-        Task<IReadOnlyList<Product>> GetProductsAsync();
     }
 }
