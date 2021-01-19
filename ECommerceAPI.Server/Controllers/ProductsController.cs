@@ -36,7 +36,6 @@ namespace ECommerceAPI.Server.Controllers
                 {
                     Description = model.Description,
                     Name = model.Name,
-                    Price = model.Price,
                     ProductBrandId = model.ProductBrandId,
                     ProductTypeId = model.ProductTypeId,
                 });
