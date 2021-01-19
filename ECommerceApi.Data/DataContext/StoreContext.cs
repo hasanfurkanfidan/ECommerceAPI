@@ -21,6 +21,13 @@ namespace ECommerceApi.Infastructure.DataContext
          
             base.OnModelCreating(modelBuilder);
         }
+        public DbSet<CartLine> CartLines { get; set; }
+        public DbSet<OrderLine> OrderLines { get; set; }
+        public DbSet<Sku> Skus { get; set; }
+        public DbSet<VariantOption> VariantOptions { get; set; }
+        public DbSet<Variant> Variants { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Cart> Carts { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductBrand> ProductBrands { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
